@@ -1,0 +1,125 @@
+.mt-50{
+	margin-top: 50px;
+}
+.mt-30{
+	margin-top: 30px;
+}
+.mt-20{
+	margin-top: 20px;
+}
+.mt-10{
+	margin-top: 10px;
+}
+.ml-15{
+	margin-left: 15px;
+}
+.ml-10{
+	margin-left: 10px;
+}
+.ml-2{
+	margin-left: 2px;
+}
+.mr-15{
+	margin-right: 15px;
+}
+.mb-5{
+	margin-bottom: 5px;
+}
+.m-5{
+	margin: 5px;
+}
+.m-2{
+	margin: 2px;
+}
+.ta-c{
+	text-align: center;
+}
+.ta-r{
+	text-align: right;
+}
+.dis-b{
+	display: block;
+}
+.dis-n{
+	display: none;
+}
+.f-l{
+	float: left;
+}
+.f-r{
+	float: right;
+}
+.p-r{
+	position: relative;
+}
+.p-a{
+	position: absolute;
+}
+.fs-20{
+	font-size: 20px;
+}
+.fs-16{
+	font-size: 16px;
+}
+.fs-14{
+	font-size: 14px;
+}
+.fs-13{
+	font-size: 13px;
+}
+.c-666{
+	color: #666;
+}
+.c-ccc{
+	color: #ccc;
+}
+.dis-n{
+	display: none;
+}
+.clear{}
+.clear:after{
+	clear: both;
+}
+#pull-ctr{
+	color: red;
+	font-size: 20px;
+}
+#pull-idc{
+	background: url("../img/loading.png") 
+		no-repeat scroll left 15px transparent;
+    height: 30px;
+    width: 80px;
+    text-indent: -19999px;
+    display: inline-block;
+}
+#crawl-idc{
+	background: url("../img/loading2.png") 
+		no-repeat scroll left top transparent;
+    height: 24px;
+    width: 24px;
+    text-indent: -19999px;
+    display: inline-block;
+}
+.thumbnail{
+	padding: 8px 4px;
+	margin-left: 0px;
+}
+.thumbnails{
+	margin: auto;
+}
+.thumbnails > li{
+	margin: 0 0 20px;
+}
+a.img{
+	display: block;
+}
+a.img img{
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    position: relative;
+}
+a.img img:hover{
+	opacity: 0.9;
+}

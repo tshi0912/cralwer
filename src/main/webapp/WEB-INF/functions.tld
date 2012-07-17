@@ -1,0 +1,16 @@
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"  
+    version="2.0">  
+  
+    <description>crawler custom tag library</description>  
+    <tlib-version>1.0</tlib-version>  
+    <short-name>fn</short-name>  
+    
+    <function>  
+        <description>Get the pin image height, bench mark 192px for width</description>  
+        <name>pinHeight</name>  
+        <function-class>cf.crawler.utils.WebImageUtil</function-class>  
+        <function-signature>int getPinHeight(int[])</function-signature>  
+    </function>  
+</taglib> 

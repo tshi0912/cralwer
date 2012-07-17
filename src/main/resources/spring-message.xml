@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:cloud="http://schema.cloudfoundry.org/spring"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit 
+		http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://schema.cloudfoundry.org/spring
+        http://schema.cloudfoundry.org/spring/cloudfoundry-spring.xsd
+        http://www.springframework.org/schema/task 
+		http://www.springframework.org/schema/task/spring-task-3.1.xsd">
+
+	<beans profile="cloud">
+		<cloud:rabbit-connection-factory id="connectionFactory">
+			<cloud:rabbit-options channel-cache-size="${rabbit.cache.size}"/>
+		</cloud:rabbit-connection-factory>
+	</beans>
+	
+	<beans profile="default">
+		<rabbit:connection-factory id="connectionFactory"
+			host="${rabbit.connection.host}" port="${rabbit.connection.port}"
+			username="${rabbit.connection.username}"
+			password="${rabbit.connection.password}"/>
+	</beans>
+	
+	<beans profile="default,cloud">
+		<rabbit:template id="rabbitTemplate" 
+			connection-factory="connectionFactory"
+		    message-converter="jsonMessageConverter"
+			exchange="${rabbit.ex.feed}"/>
+		
+		<rabbit:admin id="rabbitAdmin" 
+			connection-factory="connectionFactory" />
+	
+		<rabbit:listener-container concurrency="5" 
+			connection-factory="connectionFactory" 
+			message-converter="jsonMessageConverter">
+			<rabbit:listener ref="imageFeedHandler" method="handleMessage" queue-names="${rabbit.q.image}" />
+			<rabbit:listener ref="crawlUrlHandler" method="handleMessage" queue-names="${rabbit.q.url}" />
+		</rabbit:listener-container>
+		
+		<rabbit:topic-exchange id="feedExchange" name="${rabbit.ex.feed}">
+			<rabbit:bindings>
+	    		<rabbit:binding queue="imageQueue" pattern="${rabbit.pattern.image}"/>
+	    		<rabbit:binding queue="urlQueue" pattern="${rabbit.pattern.url}"/>
+	  		</rabbit:bindings>
+		</rabbit:topic-exchange>
+		
+		<rabbit:queue id="imageQueue" name="${rabbit.q.image}">
+			<rabbit:queue-arguments>
+				<entry key="x-ha-policy" value="all"/>
+			</rabbit:queue-arguments>
+		</rabbit:queue>
+		<rabbit:queue id="urlQueue" name="${rabbit.q.url}">
+			<rabbit:queue-arguments>
+				<entry key="x-ha-policy" value="all"/>
+			</rabbit:queue-arguments>
+		</rabbit:queue>
+	
+		<bean id="jsonMessageConverter" class="org.springframework.amqp.support.converter.JsonMessageConverter" />
+	
+		<bean id="imageUnitGateway" class="cf.crawler.message.gateways.RabbitImageUnitGateway">
+			<property name="rabbitTemplate" ref="rabbitTemplate" />
+		</bean>
+		
+		<!-- 
+		<bean id="crawlerServiceImpl" class="cf.crawler.services.MockCrawlerServiceImpl">
+			<property name="batchSize" value="2"/>
+		</bean>
+		<task:scheduled-tasks>
+			<task:scheduled ref="imageUnitGateway" 
+				method="sendImageUnits" 
+				fixed-delay="10000"/>
+		</task:scheduled-tasks>
+		-->
+	</beans>
+</beans>
