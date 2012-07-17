@@ -1,1 +1,3 @@
 Cloud Foundry Sample Application, Crawler
+
+1. Use mongodb as data service, rabbit-mq as message service
